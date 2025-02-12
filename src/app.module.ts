@@ -1,10 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ClientsModule } from './modules/clients/clients.module';
+import { RepositoryModule } from './modules/repository/repository.module';
+import { MysqlModule } from './modules/mysql/mysql.module';
+import configuration from './configs/configuration';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      load: [configuration],
+      isGlobal: true,
+    }),
+    ClientsModule,
+    RepositoryModule,
+    MysqlModule,
+  ],
 })
 export class AppModule {}
