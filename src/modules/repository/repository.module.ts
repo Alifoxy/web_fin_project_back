@@ -1,7 +1,8 @@
 import { Global, Module } from '@nestjs/common';
 
 import { ClientRepository } from './services/client.repository';
-const repositories = [ClientRepository];
+import { DeviceRepository } from './services/device.repository';
+const repositories = [ClientRepository, DeviceRepository];
 @Global()
 @Module({
   providers: [...repositories],

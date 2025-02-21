@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ClientRepository } from '../../repository/services/client.repository';
 import { ClientEntity } from '../../../database/entities/client.entity';
-import { ClientID } from '../../../common/types/entity-ids.type';
 import { CreateClientDto } from '../models/dto/req/create-client.dto';
 import { ClientListQueryDto } from '../models/dto/req/client-list-query.dto';
+import { UpdateClientDto } from '../models/dto/req/update-client.dto';
 
 @Injectable()
 export class ClientsService {
@@ -19,7 +19,16 @@ export class ClientsService {
     return await this.clientRepository.findAll(query);
   }
 
-  public async findOne(clientId: ClientID): Promise<ClientEntity> {
-    return await this.clientRepository.getById(clientId);
+  public async findOne(clientPhone: string): Promise<ClientEntity> {
+    return await this.clientRepository.findByPhone(clientPhone);
+  }
+
+  public async update(
+    clientPhone: string,
+    dto: UpdateClientDto,
+  ): Promise<ClientEntity> {
+    const client = await this.clientRepository.findByPhone(clientPhone);
+    this.clientRepository.merge(client, dto);
+    return await this.clientRepository.save(client);
   }
 }

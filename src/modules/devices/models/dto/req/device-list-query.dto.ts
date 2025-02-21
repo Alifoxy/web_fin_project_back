@@ -2,16 +2,16 @@ import { Transform, Type } from 'class-transformer';
 import {
   IsEmail,
   IsInt,
-  IsNumberString,
-  IsOptional, IsPhoneNumber,
+  IsOptional,
+  IsPhoneNumber,
   IsString,
   Length,
   Max,
-  Min
-} from "class-validator";
+  Min,
+} from 'class-validator';
 import { TransformHelper } from '../../../../../common/helpers/transform.helper';
 
-export class ClientListQueryDto {
+export class DeviceListQueryDto {
   @Type(() => Number)
   @IsInt()
   @Max(100)
@@ -33,11 +33,11 @@ export class ClientListQueryDto {
 
   @IsOptional()
   @IsPhoneNumber('UA')
-  phone?: string;
+  client_phone?: string;
 
   @IsOptional()
   @IsString()
   @Length(0, 300)
   @IsEmail()
-  email?: string;
+  status?: string;
 }

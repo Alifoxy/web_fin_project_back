@@ -2,26 +2,28 @@ import {
   IsEmail,
   IsNotEmpty,
   IsNumberString,
-  IsOptional,
+  IsOptional, IsPhoneNumber,
   IsString,
-  Length,
+  Length
 } from 'class-validator';
 export class BaseClientReqDto {
-  @IsNotEmpty()
+  @IsOptional()
+  @Length(0, 300)
   @IsString()
   name: string;
 
   @IsNotEmpty()
+  @Length(0, 300)
   @IsString()
   surname: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @Length(0, 300)
   @IsEmail()
   email: string;
 
-  @IsOptional()
-  @IsNumberString()
+  @IsNotEmpty()
+  @IsPhoneNumber('UA')
   phone: string;
 }

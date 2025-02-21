@@ -1,11 +1,19 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Post, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ClientsService } from './services/clients.service';
-import { ClientID } from '../../common/types/entity-ids.type';
 import { ClientResDto } from './models/dto/res/client.res.dto';
 import { ClientListQueryDto } from './models/dto/req/client-list-query.dto';
 import { CreateClientDto } from './models/dto/req/create-client.dto';
 import { ClientListResDto } from './models/dto/res/client-list.res.dto';
 import { ClientsMapper } from './services/clients.mapper';
+import { UpdateClientDto } from './models/dto/req/update-client.dto';
 
 @Controller('clients')
 export class ClientsController {
@@ -25,11 +33,23 @@ export class ClientsController {
     return ClientsMapper.toResDtoList(entities, total, query);
   }
 
-  @Get(':clientId')
+  @Get(':phone')
   public async findOne(
-    @Param('clientId', ParseUUIDPipe) clientId: ClientID,
+    @Param('phone') clientPhone: string,
   ): Promise<ClientResDto> {
-    const result = await this.clientsService.findOne(clientId);
+    const result = await this.clientsService.findOne(clientPhone);
+    return ClientsMapper.toResDto(result);
+  }
+
+  @Patch(':phone')
+  public async update(
+    @Param('phone') clientPhone: string,
+    @Body() updateClientDto: UpdateClientDto,
+  ): Promise<ClientResDto> {
+    const result = await this.clientsService.update(
+      clientPhone,
+      updateClientDto,
+    );
     return ClientsMapper.toResDto(result);
   }
 }

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { ClientEntity } from '../../../database/entities/client.entity';
-import { ClientID } from '../../../common/types/entity-ids.type';
 import { ClientListQueryDto } from '../../clients/models/dto/req/client-list-query.dto';
 
 @Injectable()
@@ -33,9 +32,9 @@ export class ClientRepository extends Repository<ClientEntity> {
     return await qb.getManyAndCount();
   }
 
-  public async getById(clientId: ClientID): Promise<ClientEntity> {
+  public async findByPhone(clientPhone: string): Promise<ClientEntity> {
     const qb = this.createQueryBuilder('client');
-    qb.where('client.id = :clientId', { clientId });
+    qb.where('client.phone = :clientPhone', { clientPhone });
     return await qb.getOne();
   }
 }

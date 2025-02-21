@@ -1,7 +1,14 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { TableNameEnum } from './enums/table-name.enum';
-import { ClientID } from '../../common/types/entity-ids.type';
+import { ClientID, RecordID } from '../../common/types/entity-ids.type';
 import { CreateUpdateModel } from './models/create-update.model';
+import { DeviceEntity } from './device.entity';
 
 @Index(['id'])
 @Entity(TableNameEnum.CLIENTS)
@@ -18,12 +25,17 @@ export class ClientEntity extends CreateUpdateModel {
   @Column('text')
   email: string;
 
-  @Column('text', { nullable: true })
+  @Column('text', { nullable: false })
   phone: string;
 
-  // @Column('text')
-  // device: string;
-  //
-  // @Column('text')
-  // break_info: string;
+  @OneToMany(() => DeviceEntity, (entity) => entity.client)
+  devices?: DeviceEntity[];
+
+  // @Column()
+  // record_id: RecordID;
+  // @OneToOne(() => RecordEntity, (entity) => entity.client, {
+  //   onDelete: 'SET NULL',
+  // })
+  // @JoinColumn({ name: 'client_id' })
+  // record?: RecordEntity;
 }
