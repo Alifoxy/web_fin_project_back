@@ -3,5 +3,5 @@ export enum TableNameEnum {
   DEVICES = 'devices',
   STATUSES = 'statuses',
   MANUFACTURERS = 'manufacturers',
-  // RECORDS = 'records',
+  RECORDS = 'records',
 }

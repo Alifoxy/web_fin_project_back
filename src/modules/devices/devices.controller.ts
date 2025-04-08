@@ -1,13 +1,21 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Query } from "@nestjs/common";
-import { ClientListQueryDto } from '../clients/models/dto/req/client-list-query.dto';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateDeviceDto } from './models/dto/req/create-device-dto';
 import { DevicesService } from './services/devices.service';
 import { DevicesMapper } from './services/devices.mapper';
 import { DeviceListResDto } from './models/dto/res/device-list.res.dto';
 import { DeviceResDto } from './models/dto/res/device.res.dto';
-import { DeviceListQueryDto } from "./models/dto/req/device-list-query.dto";
-import { DeviceID } from "../../common/types/entity-ids.type";
-import { UpdateDeviceDto } from "./models/dto/req/update-device.dto";
+import { DeviceListQueryDto } from './models/dto/req/device-list-query.dto';
+import { DeviceID } from '../../common/types/entity-ids.type';
+import { UpdateDeviceDto } from './models/dto/req/update-device.dto';
 
 @Controller('devices')
 export class DevicesController {
@@ -30,7 +38,7 @@ export class DevicesController {
     return DevicesMapper.toResDtoList(entities, total, query);
   }
 
-  @Get(':phone')
+  @Get(':client_phone')
   public async findOne(clientPhone: string): Promise<DeviceResDto> {
     const result = await this.devicesService.findOne(clientPhone);
     return DevicesMapper.toResDto(result);

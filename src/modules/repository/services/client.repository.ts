@@ -13,6 +13,7 @@ export class ClientRepository extends Repository<ClientEntity> {
     query: ClientListQueryDto,
   ): Promise<[ClientEntity[], number]> {
     const qb = this.createQueryBuilder('client');
+    qb.leftJoinAndSelect('client.records', 'records');
 
     if (query.search) {
       qb.andWhere('CONCAT(client.name, client.surname) LIKE :search');

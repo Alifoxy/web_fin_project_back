@@ -24,6 +24,7 @@ export class BaseClientReqDto {
   email: string;
 
   @IsNotEmpty()
-  @IsPhoneNumber('UA')
+  // @IsPhoneNumber('UA')
+  @IsNumberString()
   phone: string;
 }

@@ -4,11 +4,8 @@ import { CreateDeviceDto } from '../models/dto/req/create-device-dto';
 import { DeviceEntity } from '../../../database/entities/device.entity';
 import { ClientRepository } from '../../repository/services/client.repository';
 import { DeviceListQueryDto } from '../models/dto/req/device-list-query.dto';
-import { UpdateDeviceDto } from "../models/dto/req/update-device.dto";
-import { DeviceID } from "../../../common/types/entity-ids.type";
-// import { DeviceListQueryDto } from '../models/dto/req/device-list-query.dto';
-// import { ClientEntity } from '../../../database/entities/client.entity';
-// import { ClientResDto } from '../../clients/models/dto/res/client.res.dto';
+import { UpdateDeviceDto } from '../models/dto/req/update-device.dto';
+import { DeviceID } from '../../../common/types/entity-ids.type';
 
 @Injectable()
 export class DevicesService {
@@ -24,7 +21,7 @@ export class DevicesService {
     return await this.deviceRepository.save(
       this.deviceRepository.create({
         ...dto,
-        client_phone: clientPhone,
+        phone: clientPhone,
         client_id: client.id,
         client: client,
       }),
@@ -38,7 +35,7 @@ export class DevicesService {
   }
 
   public async findOne(clientPhone: string): Promise<DeviceEntity> {
-    return await this.deviceRepository.findByCliPhone(clientPhone);
+    return await this.deviceRepository.findOneBy({ phone: clientPhone });
   }
 
   public async update(

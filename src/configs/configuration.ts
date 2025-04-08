@@ -14,4 +14,9 @@ export default (): Config => ({
     password: process.env.MYSQL_PASSWORD,
     name: process.env.MYSQL_DB,
   },
+  sentry: {
+    dsn: process.env.SENTRY_DSN,
+    env: process.env.SENTRY_ENV,
+    debug: process.env.SENTRY_DEBUG === 'true',
+  },
 });

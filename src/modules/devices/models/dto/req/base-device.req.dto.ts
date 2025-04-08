@@ -23,10 +23,10 @@ export class BaseDeviceReqDto {
   break_info: string;
 
   @IsNotEmpty()
-  @IsString()
-  status: string;
-
-  @IsNotEmpty()
   @IsPhoneNumber('UA')
-  client_phone: string;
+  phone: string;
+
+  // @IsNotEmpty()
+  // @IsEnum(StatusEnum)
+  // status: StatusEnum;
 }

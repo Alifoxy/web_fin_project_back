@@ -1,8 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -14,6 +16,7 @@ import { CreateClientDto } from './models/dto/req/create-client.dto';
 import { ClientListResDto } from './models/dto/res/client-list.res.dto';
 import { ClientsMapper } from './services/clients.mapper';
 import { UpdateClientDto } from './models/dto/req/update-client.dto';
+import { ClientID } from '../../common/types/entity-ids.type';
 
 @Controller('clients')
 export class ClientsController {
@@ -33,23 +36,41 @@ export class ClientsController {
     return ClientsMapper.toResDtoList(entities, total, query);
   }
 
-  @Get(':phone')
+  @Get(':clientId')
   public async findOne(
-    @Param('phone') clientPhone: string,
+    @Param('clientId', ParseUUIDPipe) clientId: ClientID,
   ): Promise<ClientResDto> {
-    const result = await this.clientsService.findOne(clientPhone);
+    const result = await this.clientsService.findOne(clientId);
     return ClientsMapper.toResDto(result);
   }
 
-  @Patch(':phone')
+  @Get('phone/:clientPhone')
+  public async findOneByPhone(
+    @Param('clientPhone') clientPhone: string,
+  ): Promise<ClientResDto> {
+    const result = await this.clientsService.findOneByPhone(clientPhone);
+    return ClientsMapper.toResDto(result);
+  }
+
+  @Get(':clientPhone/exists')
+  async clientExists(
+    @Param('clientPhone') clientPhone: string,
+  ): Promise<{ exists: boolean }> {
+    const exists = await this.clientsService.clientExists(clientPhone);
+    return { exists };
+  }
+
+  @Patch(':clientId')
   public async update(
-    @Param('phone') clientPhone: string,
+    @Param('clientId', ParseUUIDPipe) clientId: ClientID,
     @Body() updateClientDto: UpdateClientDto,
   ): Promise<ClientResDto> {
-    const result = await this.clientsService.update(
-      clientPhone,
-      updateClientDto,
-    );
+    const result = await this.clientsService.update(clientId, updateClientDto);
     return ClientsMapper.toResDto(result);
+  }
+
+  @Delete(':clientId')
+  public async remove(@Param('clientId', ParseUUIDPipe) clientId: ClientID) {
+    return this.clientsService.remove(clientId);
   }
 }

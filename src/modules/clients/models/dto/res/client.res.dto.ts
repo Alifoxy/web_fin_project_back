@@ -1,5 +1,7 @@
+import { ClientID } from '../../../../../common/types/entity-ids.type';
+
 export class ClientResDto {
-  id: string;
+  id: ClientID;
   name: string;
   surname: string;
   email: string;

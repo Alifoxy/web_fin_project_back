@@ -13,7 +13,7 @@ import { CreateModel } from './models/create.model';
 @Index(['id'])
 @Entity(TableNameEnum.MANUFACTURERS)
 export class ManufacturerEntity extends CreateModel {
-  @PrimaryGeneratedColumn('rowid')
+  @PrimaryGeneratedColumn('uuid')
   id: ManufacturerID;
 
   @Column('text')

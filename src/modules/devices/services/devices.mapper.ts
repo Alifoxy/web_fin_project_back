@@ -4,6 +4,7 @@ import { DeviceListQueryDto } from '../models/dto/req/device-list-query.dto';
 import { DeviceResDto } from '../models/dto/res/device.res.dto';
 import { ClientsMapper } from '../../clients/services/clients.mapper';
 import { DeviceListResDto } from '../models/dto/res/device-list.res.dto';
+import { DeviceListSimpleResDto } from '../models/dto/res/device-list-simple.res.dto';
 
 @Injectable()
 export class DevicesMapper {
@@ -13,6 +14,12 @@ export class DevicesMapper {
     query: DeviceListQueryDto,
   ): DeviceListResDto {
     return { data: data.map(this.toResDto), total, ...query };
+  }
+
+  public static toSimpleResDtoList(
+    data: DeviceEntity[],
+  ): DeviceListSimpleResDto {
+    return { data: data.map(this.toResDto) };
   }
 
   public static toResDto(data: DeviceEntity): DeviceResDto {

@@ -13,7 +13,7 @@ import { CreateModel } from './models/create.model';
 @Index(['id'])
 @Entity(TableNameEnum.STATUSES)
 export class StatusEntity extends CreateModel {
-  @PrimaryGeneratedColumn('rowid')
+  @PrimaryGeneratedColumn('uuid')
   id: StatusID;
 
   @Column('text')

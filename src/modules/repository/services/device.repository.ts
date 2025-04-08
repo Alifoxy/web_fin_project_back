@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { DeviceEntity } from '../../../database/entities/device.entity';
 import { DeviceListQueryDto } from '../../devices/models/dto/req/device-list-query.dto';
-import { IDeviceData } from '../../devices/models/interfaces/device-data.interface';
-import { IClientData } from '../../clients/models/interfaces/client-data.interface';
 
 @Injectable()
 export class DeviceRepository extends Repository<DeviceEntity> {
@@ -16,21 +14,35 @@ export class DeviceRepository extends Repository<DeviceEntity> {
   ): Promise<[DeviceEntity[], number]> {
     const qb = this.createQueryBuilder('device');
     qb.leftJoinAndSelect('device.client', 'client');
+    qb.leftJoinAndSelect('device.status', 'status');
+    qb.leftJoinAndSelect('device.manufacturer', 'manufacturer');
 
     if (query.search) {
-      qb.andWhere('CONCAT(device.model, device.equipment) LIKE :search');
+      qb.andWhere('CONCAT(device.model) LIKE :search');
       qb.setParameter('search', `%${query.search}%`);
     }
 
-    if (query.client_phone) {
-      qb.andWhere('device.client_phone = :client_phone', {
-        client_phone: query.client_phone,
+    if (query.phone) {
+      qb.andWhere('device.phone = :phone', {
+        phone: query.phone,
+      });
+    }
+
+    if (query.client) {
+      qb.andWhere('client.surname = :client', {
+        client: query.client,
       });
     }
 
     if (query.status) {
-      qb.andWhere('device.status = :status', {
+      qb.andWhere('status.name = :status', {
         status: query.status,
+      });
+    }
+
+    if (query.manufacturer) {
+      qb.andWhere('manufacturer.name = :manufacturer', {
+        manufacturer: query.manufacturer,
       });
     }
 

@@ -1,6 +1,5 @@
 import { Transform, Type } from 'class-transformer';
 import {
-  IsEmail,
   IsInt,
   IsOptional,
   IsPhoneNumber,
@@ -33,11 +32,19 @@ export class DeviceListQueryDto {
 
   @IsOptional()
   @IsPhoneNumber('UA')
-  client_phone?: string;
+  phone?: string;
 
   @IsOptional()
   @IsString()
   @Length(0, 300)
-  @IsEmail()
   status?: string;
+
+  @IsOptional()
+  @IsString()
+  @Length(0, 300)
+  manufacturer?: string;
+
+  @IsOptional()
+  @IsString()
+  client?: string;
 }

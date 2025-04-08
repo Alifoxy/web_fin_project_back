@@ -1,4 +1,5 @@
 import { ClientResDto } from '../../../../clients/models/dto/res/client.res.dto';
+// import { StatusResDto } from '../../../../statuses/models/dto/res/status.res.dto';
 import { StatusResDto } from '../../../../statuses/models/dto/res/status.res.dto';
 
 export class DeviceResDto {

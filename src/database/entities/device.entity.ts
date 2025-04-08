@@ -34,7 +34,7 @@ export class DeviceEntity extends CreateUpdateModel {
   client?: ClientEntity;
 
   @Column()
-  client_phone: string;
+  phone: string;
 
   @Column('text')
   model: string;
@@ -45,35 +45,35 @@ export class DeviceEntity extends CreateUpdateModel {
   @Column('text')
   break_info: string;
 
-  @Column()
-  status_id: StatusID;
+  @Column({ nullable: true })
+  status_name: string;
   @ManyToOne(() => StatusEntity, (entity) => entity.devices, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'status_id' })
   status?: StatusEntity;
 
-  @Column()
-  manufacturer_id: ManufacturerID;
+  @Column({ nullable: true })
+  manufacturer_name: string;
   @ManyToOne(() => ManufacturerEntity, (entity) => entity.devices, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'manufacturer_id' })
   manufacturer?: ManufacturerEntity;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   result: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   price: string;
 
-  // @Column()
-  // record_id: RecordID;
-  // @ManyToOne(() => RecordEntity, (entity) => entity.devices, {
-  //   onDelete: 'CASCADE',
-  // })
-  // @JoinColumn({ name: 'id' })
-  // record?: RecordEntity;
+  @Column({ nullable: true })
+  record_id: RecordID;
+  @ManyToOne(() => RecordEntity, (entity) => entity.devices, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'record_id' })
+  record?: RecordEntity;
 
   // @Column({ nullable: false })
   // status: StatusEnum;

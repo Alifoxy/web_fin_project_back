@@ -5,5 +5,4 @@ export class CreateDeviceDto extends PickType(BaseDeviceReqDto, [
   'model',
   'equipment',
   'break_info',
-  'status',
 ]) {}
