@@ -5,15 +5,17 @@ import { GenNumHelper } from "../../../common/helpers/gen-num.helper";
 import { ClientRepository } from "../../repository/services/client.repository";
 import { ClientsService } from "../../clients/services/clients.service";
 import { UpdateRecordDto } from "../models/dto/req/update-record.dto";
-import { RecordID } from "../../../common/types/entity-ids.type";
+import { ClientID, RecordID } from "../../../common/types/entity-ids.type";
 import { CreateClientDto } from "../../clients/models/dto/req/create-client.dto";
 import { ClientEntity } from "../../../database/entities/client.entity";
 import { RecordListQueryDto } from "../models/dto/req/record-list-query.dto";
+import { DevicesService } from "../../devices/services/devices.service";
 
 @Injectable()
 export class RecordsService {
   constructor(
     private readonly clientsService: ClientsService,
+    private readonly devicesService: DevicesService,
     private readonly clientRepository: ClientRepository,
     private readonly recordRepository: RecordRepository,
   ) {}
@@ -33,8 +35,10 @@ export class RecordsService {
     // const cli_data = record.client;
     const rec_id = rec_cli.id;
     // return await this.isClientExist(rec, rec.client);
+
     return await this.findOne(rec_id);
     //проверяем, существует ли клиент в таблице клиентов: если нет, создаем клиента и берем его id, если есть, берем id клиента из таблицы клиентов.
+
   }
 
   // Math.random()
@@ -43,6 +47,10 @@ export class RecordsService {
     query: RecordListQueryDto,
   ): Promise<[RecordEntity[], number]> {
     return await this.recordRepository.findAll(query);
+  }
+
+  public async findByCliId(client_id: ClientID): Promise<RecordEntity[]> {
+    return await this.recordRepository.findBy({ client_id: client_id });
   }
   //
   // public async findOne(record_id: RecordID): Promise<RecordEntity> {

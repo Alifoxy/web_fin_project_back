@@ -6,8 +6,9 @@ import { ClientsService } from '../clients/services/clients.service';
 import { CreateClientDto } from '../clients/models/dto/req/create-client.dto';
 import { RecordListQueryDto } from './models/dto/req/record-list-query.dto';
 import { RecordListResDto } from './models/dto/res/record-list.res.dto';
-import { RecordResDto } from "./models/dto/res/record.res.dto";
-import { RecordID } from "../../common/types/entity-ids.type";
+import { RecordResDto } from './models/dto/res/record.res.dto';
+import { ClientID, RecordID } from '../../common/types/entity-ids.type';
+import { RecordListSimpleResDto } from "./models/dto/res/record-list-simple.res.dto";
 
 @Controller('records')
 export class RecordsController {
@@ -50,6 +51,14 @@ export class RecordsController {
   ): Promise<RecordResDto> {
     const result = await this.recordsService.findOne(recordId);
     return RecordsMapper.toResDto(result);
+  }
+
+  @Get(':clientId')
+  public async findByCliId(
+    @Param('clientId', ParseUUIDPipe) clientId: ClientID,
+  ): Promise<RecordListSimpleResDto> {
+    const result = await this.recordsService.findByCliId(clientId);
+    return RecordsMapper.toSimpleResDtoList(result);
   }
   //
   // @Patch(':clientId')

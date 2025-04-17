@@ -22,6 +22,7 @@ export class ClientsMapper {
       surname: data.surname,
       email: data.email,
       phone: data.phone,
+      records: data.records,
       created: data.created,
       updated: data.updated,
     };

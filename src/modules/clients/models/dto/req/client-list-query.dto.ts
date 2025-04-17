@@ -32,8 +32,9 @@ export class ClientListQueryDto {
   search?: string;
 
   @IsOptional()
-  @IsPhoneNumber('UA')
-  phone?: string;
+  @IsString()
+  // @IsPhoneNumber('UA')
+  phone_num?: string;
 
   @IsOptional()
   @IsString()

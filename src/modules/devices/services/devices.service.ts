@@ -1,29 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { DeviceRepository } from '../../repository/services/device.repository';
+import { RecordRepository } from '../../repository/services/record.repository';
 import { CreateDeviceDto } from '../models/dto/req/create-device-dto';
 import { DeviceEntity } from '../../../database/entities/device.entity';
 import { ClientRepository } from '../../repository/services/client.repository';
 import { DeviceListQueryDto } from '../models/dto/req/device-list-query.dto';
 import { UpdateDeviceDto } from '../models/dto/req/update-device.dto';
-import { DeviceID } from '../../../common/types/entity-ids.type';
+import { DeviceID, RecordID } from '../../../common/types/entity-ids.type';
 
 @Injectable()
 export class DevicesService {
   constructor(
     private readonly deviceRepository: DeviceRepository,
     private readonly clientRepository: ClientRepository,
+    private readonly recordRepository: RecordRepository,
   ) {}
   public async create(
-    clientPhone: string,
-    dto: CreateDeviceDto,
+    recordId: RecordID,
+    dto: DeviceListQueryDto,
   ): Promise<DeviceEntity> {
-    const client = await this.clientRepository.findByPhone(clientPhone);
+    const record = await this.recordRepository.findOneBy({ id: recordId });
     return await this.deviceRepository.save(
       this.deviceRepository.create({
         ...dto,
-        phone: clientPhone,
-        client_id: client.id,
-        client: client,
+        record: record.id,
+        client_id: record.client_id,
       }),
     );
   }

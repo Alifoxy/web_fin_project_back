@@ -7,6 +7,7 @@ import { UpdateClientDto } from '../models/dto/req/update-client.dto';
 import { ClientID, RecordID } from "../../../common/types/entity-ids.type";
 import { RecordEntity } from '../../../database/entities/record.entity';
 import { RecordRepository } from '../../repository/services/record.repository';
+import { ClientResDto } from "../models/dto/res/client.res.dto";
 
 @Injectable()
 export class ClientsService {
@@ -26,7 +27,11 @@ export class ClientsService {
   }
 
   public async findOne(clientId: ClientID): Promise<ClientEntity> {
-    return await this.clientRepository.findOneBy({ id: clientId });
+    const client = await this.clientRepository.findOneBy({ id: clientId });
+    const rec = await this.recordRepository.findBy({ client_id: clientId });
+
+    this.clientRepository.merge(client, { records: rec });
+    return await this.clientRepository.save(client);
   }
 
   public async findOneByPhone(clientPhone: string): Promise<ClientEntity> {

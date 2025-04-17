@@ -20,8 +20,8 @@ export class ClientRepository extends Repository<ClientEntity> {
       qb.setParameter('search', `%${query.search}%`);
     }
 
-    if (query.phone) {
-      qb.andWhere('client.phone = :phone', { phone: query.phone });
+    if (query.phone_num) {
+      qb.andWhere('client.phone = :phone_num', { phone_num: query.phone_num });
     }
 
     if (query.email) {

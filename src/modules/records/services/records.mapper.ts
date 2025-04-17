@@ -5,6 +5,10 @@ import { RecordListResDto } from '../models/dto/res/record-list.res.dto';
 import { RecordEntity } from '../../../database/entities/record.entity';
 import { RecordResDto } from '../models/dto/res/record.res.dto';
 import { DevicesMapper } from '../../devices/services/devices.mapper';
+import { RecordListSimpleResDto } from '../models/dto/res/record-list-simple.res.dto';
+// import { DeviceEntity } from "../../../database/entities/device.entity";
+// import { DeviceListSimpleResDto } from "../../devices/models/dto/res/device-list-simple.res.dto";
+// import { RecordListSimpleResDto } from "../models/dto/res/record-list-simple.res.dto";
 
 @Injectable()
 export class RecordsMapper {
@@ -14,6 +18,12 @@ export class RecordsMapper {
     query: RecordListQueryDto,
   ): RecordListResDto {
     return { data: data.map(this.toResDto), total, ...query };
+  }
+
+  public static toSimpleResDtoList(
+    data: RecordEntity[],
+  ): RecordListSimpleResDto {
+    return { data: data.map(this.toResDto) };
   }
 
   public static toResDto(data: RecordEntity): RecordResDto {

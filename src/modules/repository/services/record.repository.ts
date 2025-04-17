@@ -16,8 +16,14 @@ export class RecordRepository extends Repository<RecordEntity> {
     qb.leftJoinAndSelect('record.devices', 'devices');
 
     if (query.cli_phone) {
-      qb.andWhere('client.phone = :client', {
+      qb.andWhere('client.phone = :cli_phone', {
         cli_phone: query.cli_phone,
+      });
+    }
+
+    if (query.rec_num) {
+      qb.andWhere('record.record_num = :rec_num', {
+        rec_num: query.rec_num,
       });
     }
 

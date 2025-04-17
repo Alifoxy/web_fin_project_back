@@ -22,10 +22,10 @@ export class RecordListQueryDto {
   @IsOptional()
   search?: string;
 
-  // @IsOptional()
-  // @IsPhoneNumber('UA')
-  // phone?: string;
-  //
+  @IsOptional()
+  @IsString()
+  rec_num?: string;
+
   // @IsOptional()
   // @IsString()
   // @Length(0, 300)
@@ -34,6 +34,10 @@ export class RecordListQueryDto {
   // @IsString()
   // @IsOptional()
   // client?: string;
+  @IsOptional()
+  @IsString()
+  cli_id?: string;
+
   @IsOptional()
   @IsPhoneNumber('UA')
   cli_phone?: string;
