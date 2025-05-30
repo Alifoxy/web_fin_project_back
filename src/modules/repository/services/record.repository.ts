@@ -12,6 +12,21 @@ export class RecordRepository extends Repository<RecordEntity> {
     query: RecordListQueryDto,
   ): Promise<[RecordEntity[], number]> {
     const qb = this.createQueryBuilder('record');
+    const skip = (+query.page - 1) * query.limit;
+    qb.leftJoinAndSelect('record.client', 'client');
+    qb.leftJoinAndSelect('record.devices', 'devices');
+
+    qb.take(query.limit);
+    qb.skip(skip);
+
+    return await qb.getManyAndCount();
+  }
+
+  public async findByParams(
+    query: RecordListQueryDto,
+  ): Promise<[RecordEntity[], number]> {
+    const qb = this.createQueryBuilder('record');
+    const skip = 0;
     qb.leftJoinAndSelect('record.client', 'client');
     qb.leftJoinAndSelect('record.devices', 'devices');
 
@@ -28,7 +43,7 @@ export class RecordRepository extends Repository<RecordEntity> {
     }
 
     qb.take(query.limit);
-    qb.skip(query.offset);
+    qb.skip(skip);
 
     return await qb.getManyAndCount();
   }

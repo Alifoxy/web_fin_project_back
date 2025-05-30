@@ -1,10 +1,5 @@
 import { Type } from 'class-transformer';
-import {
-  IsInt,
-  IsOptional,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class StatusListQueryDto {
   @Type(() => Number)
@@ -14,10 +9,17 @@ export class StatusListQueryDto {
   @IsOptional()
   limit?: number = 10;
 
+  @IsOptional()
+  @IsString()
+  page?: string;
+
   @Type(() => Number)
   @IsInt()
   @Min(0)
   @IsOptional()
   offset?: number = 0;
 
+  @IsOptional()
+  @IsString()
+  status?: string;
 }

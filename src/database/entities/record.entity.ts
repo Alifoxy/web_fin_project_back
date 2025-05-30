@@ -2,11 +2,11 @@ import {
   Column,
   Entity,
   Index,
-  JoinColumn, ManyToOne,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { TableNameEnum } from './enums/table-name.enum';
 import { ClientID, RecordID } from '../../common/types/entity-ids.type';
 import { DeviceEntity } from './device.entity';

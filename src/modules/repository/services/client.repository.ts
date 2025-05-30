@@ -12,6 +12,31 @@ export class ClientRepository extends Repository<ClientEntity> {
   public async findAll(
     query: ClientListQueryDto,
   ): Promise<[ClientEntity[], number]> {
+    const skip = (+query.page - 1) * query.limit;
+    const qb = this.createQueryBuilder('client');
+    qb.leftJoinAndSelect('client.records', 'records');
+
+    qb.take(query.limit);
+    qb.skip(skip);
+
+    return await qb.getManyAndCount();
+  }
+
+  // public async findOneByPhone(
+  //   query: ClientQueryDto,
+  // ): Promise<[ClientEntity[], number]> {
+  //   const qb = this.createQueryBuilder('client');
+  //   qb.leftJoinAndSelect('client.records', 'records');
+  //   qb.andWhere('client.phone = :phone', { phone: query.phone });
+  //   return await qb.getManyAndCount();
+  //
+  //   // return await qb.getOne();
+  // }
+
+  public async findByParams(
+    query: ClientListQueryDto,
+  ): Promise<[ClientEntity[], number]> {
+    const skip = 0;
     const qb = this.createQueryBuilder('client');
     qb.leftJoinAndSelect('client.records', 'records');
 
@@ -28,14 +53,14 @@ export class ClientRepository extends Repository<ClientEntity> {
       qb.andWhere('client.email = :email', { email: query.email });
     }
     qb.take(query.limit);
-    qb.skip(query.offset);
+    qb.skip(skip);
 
     return await qb.getManyAndCount();
   }
 
-  public async findByPhone(clientPhone: string): Promise<ClientEntity> {
-    const qb = this.createQueryBuilder('client');
-    qb.where('client.phone = :clientPhone', { clientPhone });
-    return await qb.getOne();
-  }
+  // public async findByPhone(clientPhone: string): Promise<ClientEntity> {
+  //   const qb = this.createQueryBuilder('client');
+  //   qb.where('client.phone = :clientPhone', { clientPhone });
+  //   return await qb.getOne();
+  // }
 }

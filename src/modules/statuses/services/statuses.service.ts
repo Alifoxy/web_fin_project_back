@@ -19,21 +19,34 @@ export class StatusesService {
     return await this.statusRepository.findAll(query);
   }
 
-  public async findOne(statusId: StatusID): Promise<StatusEntity> {
-    return await this.statusRepository.findOneBy({ id: statusId });
-  }
-
-  public async update(
-    statusId: StatusID,
-    dto: CreateUpdateStatusDto,
-  ): Promise<StatusEntity> {
-    const status = await this.statusRepository.findOneBy({ id: statusId });
-    this.statusRepository.merge(status, dto);
-    return await this.statusRepository.save(status);
+  public async findByName(
+    query: StatusListQueryDto,
+  ): Promise<[StatusEntity[], number]> {
+    return await this.statusRepository.findByName(query);
   }
 
   public async remove(statusId: StatusID): Promise<StatusEntity> {
     const status = await this.statusRepository.findOneBy({ id: statusId });
     return this.statusRepository.remove(status);
   }
+
+  public async IsStatusExists(status: string): Promise<boolean> {
+    const s = await this.statusRepository.findOneBy({
+      status: status,
+    });
+    return !!s;
+  }
+
+  // public async findOne(statusId: StatusID): Promise<StatusEntity> {
+  //   return await this.statusRepository.findOneBy({ id: statusId });
+  // }
+  //
+  // public async update(
+  //   statusId: StatusID,
+  //   dto: CreateUpdateStatusDto,
+  // ): Promise<StatusEntity> {
+  //   const status = await this.statusRepository.findOneBy({ id: statusId });
+  //   this.statusRepository.merge(status, dto);
+  //   return await this.statusRepository.save(status);
+  // }
 }

@@ -19,6 +19,6 @@ export class ManufacturerEntity extends CreateModel {
   @Column('text')
   manufacturer: string;
 
-  @OneToMany(() => DeviceEntity, (entity) => entity.client)
+  @OneToMany(() => DeviceEntity, (entity) => entity.manufacturer_name)
   devices?: DeviceEntity[];
 }

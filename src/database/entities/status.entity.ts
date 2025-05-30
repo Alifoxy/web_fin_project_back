@@ -19,6 +19,6 @@ export class StatusEntity extends CreateModel {
   @Column('text')
   status: string;
 
-  @OneToMany(() => DeviceEntity, (entity) => entity.status)
+  @OneToMany(() => DeviceEntity, (entity) => entity.status_name)
   devices?: DeviceEntity[];
 }

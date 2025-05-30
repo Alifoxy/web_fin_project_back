@@ -18,6 +18,10 @@ export class DeviceListQueryDto {
   @IsOptional()
   limit?: number = 10;
 
+  @IsOptional()
+  @IsString()
+  page?: string;
+
   @Type(() => Number)
   @IsInt()
   @Min(0)
@@ -30,9 +34,9 @@ export class DeviceListQueryDto {
   @IsOptional()
   search?: string;
 
-  @IsOptional()
-  @IsPhoneNumber('UA')
-  phone?: string;
+  // @IsOptional()
+  // @IsPhoneNumber('UA')
+  // phone?: string;
 
   @IsOptional()
   @IsString()
@@ -47,4 +51,8 @@ export class DeviceListQueryDto {
   @IsOptional()
   @IsString()
   client?: string;
+
+  // @IsOptional()
+  // @IsString()
+  // record_id?: string;
 }

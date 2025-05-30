@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ManufacturerID } from '../../../common/types/entity-ids.type';
 import { ManufacturerRepository } from '../../repository/services/manufacturer.repository';
-import { CreateUpdateManufacturerDto } from '../models/dto/req/create-update-manufacturer-dto';
+import { CreateUpdateManDto } from '../models/dto/req/create-update-manufacturer-dto';
 import { ManufacturerEntity } from '../../../database/entities/manufacturer.entity';
 import { ManufacturerListQueryDto } from '../models/dto/req/manufacturer-list-query.dto';
 
@@ -10,9 +10,7 @@ export class ManufacturersService {
   constructor(
     private readonly manufacturerRepository: ManufacturerRepository,
   ) {}
-  public async create(
-    dto: CreateUpdateManufacturerDto,
-  ): Promise<ManufacturerEntity> {
+  public async create(dto: CreateUpdateManDto): Promise<ManufacturerEntity> {
     return await this.manufacturerRepository.save(
       this.manufacturerRepository.create(dto),
     );
@@ -24,21 +22,10 @@ export class ManufacturersService {
     return await this.manufacturerRepository.findAll(query);
   }
 
-  public async findOne(
-    manufacturerId: ManufacturerID,
-  ): Promise<ManufacturerEntity> {
-    return await this.manufacturerRepository.findOneBy({ id: manufacturerId });
-  }
-
-  public async update(
-    manufacturerId: ManufacturerID,
-    dto: CreateUpdateManufacturerDto,
-  ): Promise<ManufacturerEntity> {
-    const manufacturer = await this.manufacturerRepository.findOneBy({
-      id: manufacturerId,
-    });
-    this.manufacturerRepository.merge(manufacturer, dto);
-    return await this.manufacturerRepository.save(manufacturer);
+  public async findByName(
+    query: ManufacturerListQueryDto,
+  ): Promise<[ManufacturerEntity[], number]> {
+    return await this.manufacturerRepository.findByName(query);
   }
 
   public async remove(
@@ -49,4 +36,28 @@ export class ManufacturersService {
     });
     return this.manufacturerRepository.remove(manufacturer);
   }
+
+  public async IsManufacturerExists(manufacturer: string): Promise<boolean> {
+    const m = await this.manufacturerRepository.findOneBy({
+      manufacturer: manufacturer,
+    });
+    return !!m;
+  }
+
+  // public async findOneByID(
+  //   manufacturerId: ManufacturerID,
+  // ): Promise<ManufacturerEntity> {
+  //   return await this.manufacturerRepository.findOneBy({ id: manufacturerId });
+  // }
+  //
+  // public async update(
+  //   manufacturerId: ManufacturerID,
+  //   dto: CreateUpdateManufacturerDto,
+  // ): Promise<ManufacturerEntity> {
+  //   const manufacturer = await this.manufacturerRepository.findOneBy({
+  //     id: manufacturerId,
+  //   });
+  //   this.manufacturerRepository.merge(manufacturer, dto);
+  //   return await this.manufacturerRepository.save(manufacturer);
+  // }
 }

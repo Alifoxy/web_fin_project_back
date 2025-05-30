@@ -1,14 +1,19 @@
 import { ClientResDto } from '../../../../clients/models/dto/res/client.res.dto';
-// import { StatusResDto } from '../../../../statuses/models/dto/res/status.res.dto';
-import { StatusResDto } from '../../../../statuses/models/dto/res/status.res.dto';
+import {
+  ClientID,
+  RecordID,
+} from '../../../../../common/types/entity-ids.type';
 
 export class DeviceResDto {
   id: string;
+  record_id: RecordID;
+  client_id: ClientID;
   model: string;
   equipment: string;
   break_info: string;
   client: ClientResDto;
-  status: StatusResDto;
+  status_name: string;
+  manufacturer_name: string;
   created: Date;
   updated: Date;
 }

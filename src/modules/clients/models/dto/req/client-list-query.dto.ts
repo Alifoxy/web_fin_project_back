@@ -19,11 +19,15 @@ export class ClientListQueryDto {
   @IsOptional()
   limit?: number = 10;
 
+  @IsOptional()
+  @IsString()
+  page?: string;
+
   @Type(() => Number)
   @IsInt()
   @Min(0)
   @IsOptional()
-  offset?: number = 0;
+  offset?: number;
 
   @Transform(TransformHelper.trim)
   @Transform(TransformHelper.toLowerCase)

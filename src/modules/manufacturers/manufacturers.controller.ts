@@ -1,5 +1,5 @@
 import {
-  Body,
+  Body, ConflictException,
   Controller,
   Delete,
   Get,
@@ -10,12 +10,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { ManufacturerID } from '../../common/types/entity-ids.type';
-import { CreateUpdateManufacturerDto } from './models/dto/req/create-update-manufacturer-dto';
+import { CreateUpdateManDto } from './models/dto/req/create-update-manufacturer-dto';
 import { ManufacturersService } from './services/manufacturers.service';
 import { ManufacturersMapper } from './services/manufacturers.mapper';
 import { ManufacturerResDto } from './models/dto/res/manufacturer.res.dto';
 import { ManufacturerListQueryDto } from './models/dto/req/manufacturer-list-query.dto';
 import { ManufacturerListResDto } from './models/dto/res/manufacturer-list.res.dto';
+import { ManufacturerParamListResDto } from './models/dto/res/manufacturer-param-list.res.dto';
 
 @Controller('manufacturers')
 export class ManufacturersController {
@@ -23,11 +24,17 @@ export class ManufacturersController {
 
   @Post()
   public async create(
-    // @Param('phone') clientPhone: string,
-    @Body() dto: CreateUpdateManufacturerDto,
+    @Body() dto: CreateUpdateManDto,
   ): Promise<ManufacturerResDto> {
-    const result = await this.manufacturerService.create(dto);
-    return ManufacturersMapper.toResDto(result);
+    const ex_m = await this.manufacturerService.IsManufacturerExists(
+      dto.manufacturer,
+    );
+    if (ex_m) {
+      throw new ConflictException(`Manufacturer already exists`);
+    } else {
+      const result = await this.manufacturerService.create(dto);
+      return ManufacturersMapper.toResDto(result);
+    }
   }
 
   @Get()
@@ -35,24 +42,15 @@ export class ManufacturersController {
     @Query() query: ManufacturerListQueryDto,
   ): Promise<ManufacturerListResDto> {
     const [entities, total] = await this.manufacturerService.findAll(query);
-    return ManufacturersMapper.toResDtoList(entities, total, query);
+    return ManufacturersMapper.toResDtoList(entities, query.page, total, query);
   }
 
-  @Get(':manufacturerId')
-  public async findOne(
-    @Param('manufacturerId', ParseUUIDPipe) manufacturerId: ManufacturerID,
-  ): Promise<ManufacturerResDto> {
-    const result = await this.manufacturerService.findOne(manufacturerId);
-    return ManufacturersMapper.toResDto(result);
-  }
-
-  @Patch(':manufacturerId')
-  public async update(
-    @Param('manufacturerId', ParseUUIDPipe) manufacturerId: ManufacturerID,
-    @Body() dto: CreateUpdateManufacturerDto,
-  ): Promise<ManufacturerResDto> {
-    const result = await this.manufacturerService.update(manufacturerId, dto);
-    return ManufacturersMapper.toResDto(result);
+  @Get('byName')
+  public async findByName(
+    @Query() query: ManufacturerListQueryDto,
+  ): Promise<ManufacturerParamListResDto> {
+    const [entities, total] = await this.manufacturerService.findByName(query);
+    return ManufacturersMapper.toParamResDtoList(entities, total, query);
   }
 
   @Delete(':manufacturerId')
@@ -61,4 +59,21 @@ export class ManufacturersController {
   ) {
     return this.manufacturerService.remove(manufacturerId);
   }
+
+  // @Get(':manufacturerId')
+  // public async findOne(
+  //   @Param('manufacturerId', ParseUUIDPipe) manufacturerId: ManufacturerID,
+  // ): Promise<ManufacturerResDto> {
+  //   const result = await this.manufacturerService.findOne(manufacturerId);
+  //   return ManufacturersMapper.toResDto(result);
+  // }
+  //
+  // @Patch(':manufacturerId')
+  // public async update(
+  //   @Param('manufacturerId', ParseUUIDPipe) manufacturerId: ManufacturerID,
+  //   @Body() dto: CreateUpdateManufacturerDto,
+  // ): Promise<ManufacturerResDto> {
+  //   const result = await this.manufacturerService.update(manufacturerId, dto);
+  //   return ManufacturersMapper.toResDto(result);
+  // }
 }

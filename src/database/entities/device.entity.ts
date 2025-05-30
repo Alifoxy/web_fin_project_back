@@ -33,9 +33,6 @@ export class DeviceEntity extends CreateUpdateModel {
   @JoinColumn({ name: 'client_id' })
   client?: ClientEntity;
 
-  @Column()
-  phone: string;
-
   @Column('text')
   model: string;
 
@@ -50,16 +47,15 @@ export class DeviceEntity extends CreateUpdateModel {
   @ManyToOne(() => StatusEntity, (entity) => entity.devices, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'status_id' })
-  status?: StatusEntity;
-
+  // @JoinColumn({ name: 'status_id' })
+  // status?: StatusEntity;
   @Column({ nullable: true })
   manufacturer_name: string;
   @ManyToOne(() => ManufacturerEntity, (entity) => entity.devices, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'manufacturer_id' })
-  manufacturer?: ManufacturerEntity;
+  // @JoinColumn({ name: 'manufacturer_id' })
+  // manufacturer?: ManufacturerEntity;
 
   @Column('text', { nullable: true })
   result: string;

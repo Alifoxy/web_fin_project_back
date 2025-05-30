@@ -6,6 +6,8 @@ import { RecordEntity } from '../../../database/entities/record.entity';
 import { RecordResDto } from '../models/dto/res/record.res.dto';
 import { DevicesMapper } from '../../devices/services/devices.mapper';
 import { RecordListSimpleResDto } from '../models/dto/res/record-list-simple.res.dto';
+import { RecordParamListResDto } from '../models/dto/res/record-param-list.res.dto';
+import { RecordCliExistsResDto } from '../models/dto/res/record-cli-exists.res.dto';
 // import { DeviceEntity } from "../../../database/entities/device.entity";
 // import { DeviceListSimpleResDto } from "../../devices/models/dto/res/device-list-simple.res.dto";
 // import { RecordListSimpleResDto } from "../models/dto/res/record-list-simple.res.dto";
@@ -14,9 +16,18 @@ import { RecordListSimpleResDto } from '../models/dto/res/record-list-simple.res
 export class RecordsMapper {
   public static toResDtoList(
     data: RecordEntity[],
+    page: string,
     total: number,
     query: RecordListQueryDto,
   ): RecordListResDto {
+    return { data: data.map(this.toResDto), page, total, ...query };
+  }
+
+  public static toParamResDtoList(
+    data: RecordEntity[],
+    total: number,
+    query: RecordListQueryDto,
+  ): RecordParamListResDto {
     return { data: data.map(this.toResDto), total, ...query };
   }
 
@@ -37,6 +48,12 @@ export class RecordsMapper {
         : null,
       created: data.created,
       updated: data.updated,
+    };
+  }
+
+  public static toCliExResDto(data: string): RecordCliExistsResDto {
+    return {
+      data,
     };
   }
 }

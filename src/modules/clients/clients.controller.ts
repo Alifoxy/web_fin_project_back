@@ -17,6 +17,7 @@ import { ClientListResDto } from './models/dto/res/client-list.res.dto';
 import { ClientsMapper } from './services/clients.mapper';
 import { UpdateClientDto } from './models/dto/req/update-client.dto';
 import { ClientID } from '../../common/types/entity-ids.type';
+import { ClientParamListResDto } from './models/dto/res/client_param_list.res.dto';
 
 @Controller('clients')
 export class ClientsController {
@@ -33,7 +34,15 @@ export class ClientsController {
     @Query() query: ClientListQueryDto,
   ): Promise<ClientListResDto> {
     const [entities, total] = await this.clientsService.findAll(query);
-    return ClientsMapper.toResDtoList(entities, total, query);
+    return ClientsMapper.toResDtoList(entities, query.page, total, query);
+  }
+
+  @Get('by_params')
+  public async findByParams(
+    @Query() query: ClientListQueryDto,
+  ): Promise<ClientParamListResDto> {
+    const [entities, total] = await this.clientsService.findByParams(query);
+    return ClientsMapper.toParamResDtoList(entities, total, query);
   }
 
   @Get(':clientId')
@@ -44,21 +53,22 @@ export class ClientsController {
     return ClientsMapper.toResDto(result);
   }
 
-  @Get('phone/:clientPhone')
-  public async findOneByPhone(
-    @Param('clientPhone') clientPhone: string,
-  ): Promise<ClientResDto> {
-    const result = await this.clientsService.findOneByPhone(clientPhone);
-    return ClientsMapper.toResDto(result);
-  }
+  // @Get(':phone')
+  // public async findOneByPhone(
+  //   // @Query() query: ClientQueryDto,
+  //   @Param(':phone') phone: string,
+  // ): Promise<ClientResDto> {
+  //   const result = await this.clientsService.findOneByPhone(phone);
+  //   return ClientsMapper.toResDto(result);
+  // }
 
-  @Get(':clientPhone/exists')
-  async clientExists(
-    @Param('clientPhone') clientPhone: string,
-  ): Promise<{ exists: boolean }> {
-    const exists = await this.clientsService.clientExists(clientPhone);
-    return { exists };
-  }
+  // @Get(':clientPhone/exists')
+  // async clientExists(
+  //   @Param('clientPhone') clientPhone: string,
+  // ): Promise<{ exists: boolean }> {
+  //   const exists = await this.clientsService.IsClientExists(clientPhone);
+  //   return { exists };
+  // }
 
   @Patch(':clientId')
   public async update(
@@ -69,8 +79,8 @@ export class ClientsController {
     return ClientsMapper.toResDto(result);
   }
 
-  @Delete(':clientId')
-  public async remove(@Param('clientId', ParseUUIDPipe) clientId: ClientID) {
-    return this.clientsService.remove(clientId);
+  @Delete('phone/:clientPhone')
+  public async remove(@Param('clientPhone') clientPhone: string) {
+    return this.clientsService.remove(clientPhone);
   }
 }
