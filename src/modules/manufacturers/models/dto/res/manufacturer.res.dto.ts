@@ -1,5 +1,7 @@
+import { ManufacturerID } from '../../../../../common/types/entity-ids.type';
+
 export class ManufacturerResDto {
-  id: string;
+  id: ManufacturerID;
   manufacturer: string;
-  created: Date;
+  created: string;
 }

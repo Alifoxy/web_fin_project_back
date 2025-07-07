@@ -1,9 +1,15 @@
 import { Transform, Type } from 'class-transformer';
-import { IsInt, IsOptional, IsPhoneNumber, IsString, Max, Min } from "class-validator";
+import {
+  IsInt,
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 import { TransformHelper } from '../../../../../common/helpers/transform.helper';
 
 export class RecordListQueryDto {
-
   @Type(() => Number)
   @IsInt()
   @Max(100)

@@ -33,7 +33,6 @@ export class CreateClientDto extends PickType(BaseClientReqDto, [
   email: string;
 
   @IsNotEmpty()
-  // @IsPhoneNumber('UA')
   @IsNumberString()
   phone: string;
 }

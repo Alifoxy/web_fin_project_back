@@ -1,13 +1,5 @@
 import { Transform, Type } from 'class-transformer';
-import {
-  IsInt,
-  IsOptional,
-  IsPhoneNumber,
-  IsString,
-  Length,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsInt, IsOptional, IsString, Length, Max, Min } from 'class-validator';
 import { TransformHelper } from '../../../../../common/helpers/transform.helper';
 
 export class DeviceListQueryDto {
@@ -34,10 +26,6 @@ export class DeviceListQueryDto {
   @IsOptional()
   search?: string;
 
-  // @IsOptional()
-  // @IsPhoneNumber('UA')
-  // phone?: string;
-
   @IsOptional()
   @IsString()
   @Length(0, 300)
@@ -51,8 +39,4 @@ export class DeviceListQueryDto {
   @IsOptional()
   @IsString()
   client?: string;
-
-  // @IsOptional()
-  // @IsString()
-  // record_id?: string;
 }

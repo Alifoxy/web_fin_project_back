@@ -43,21 +43,4 @@ export class ManufacturersService {
     });
     return !!m;
   }
-
-  // public async findOneByID(
-  //   manufacturerId: ManufacturerID,
-  // ): Promise<ManufacturerEntity> {
-  //   return await this.manufacturerRepository.findOneBy({ id: manufacturerId });
-  // }
-  //
-  // public async update(
-  //   manufacturerId: ManufacturerID,
-  //   dto: CreateUpdateManufacturerDto,
-  // ): Promise<ManufacturerEntity> {
-  //   const manufacturer = await this.manufacturerRepository.findOneBy({
-  //     id: manufacturerId,
-  //   });
-  //   this.manufacturerRepository.merge(manufacturer, dto);
-  //   return await this.manufacturerRepository.save(manufacturer);
-  // }
 }

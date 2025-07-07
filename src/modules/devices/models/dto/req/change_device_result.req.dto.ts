@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class ChangeDeviceStatusReqDto {
+export class ChangeDeviceResultReqDto {
   @IsNotEmpty()
   @IsString()
-  status: string;
+  result: string;
 }

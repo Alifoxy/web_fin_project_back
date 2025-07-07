@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class BaseStatusReqDto {
+export class ChangeDeviceManufacturerReqDto {
   @IsNotEmpty()
   @IsString()
-  status: string;
+  manufacturer: string;
 }

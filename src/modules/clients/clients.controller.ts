@@ -53,23 +53,6 @@ export class ClientsController {
     return ClientsMapper.toResDto(result);
   }
 
-  // @Get(':phone')
-  // public async findOneByPhone(
-  //   // @Query() query: ClientQueryDto,
-  //   @Param(':phone') phone: string,
-  // ): Promise<ClientResDto> {
-  //   const result = await this.clientsService.findOneByPhone(phone);
-  //   return ClientsMapper.toResDto(result);
-  // }
-
-  // @Get(':clientPhone/exists')
-  // async clientExists(
-  //   @Param('clientPhone') clientPhone: string,
-  // ): Promise<{ exists: boolean }> {
-  //   const exists = await this.clientsService.IsClientExists(clientPhone);
-  //   return { exists };
-  // }
-
   @Patch(':clientId')
   public async update(
     @Param('clientId', ParseUUIDPipe) clientId: ClientID,

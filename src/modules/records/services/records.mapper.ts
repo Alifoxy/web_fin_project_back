@@ -8,9 +8,6 @@ import { DevicesMapper } from '../../devices/services/devices.mapper';
 import { RecordListSimpleResDto } from '../models/dto/res/record-list-simple.res.dto';
 import { RecordParamListResDto } from '../models/dto/res/record-param-list.res.dto';
 import { RecordCliExistsResDto } from '../models/dto/res/record-cli-exists.res.dto';
-// import { DeviceEntity } from "../../../database/entities/device.entity";
-// import { DeviceListSimpleResDto } from "../../devices/models/dto/res/device-list-simple.res.dto";
-// import { RecordListSimpleResDto } from "../models/dto/res/record-list-simple.res.dto";
 
 @Injectable()
 export class RecordsMapper {
@@ -46,14 +43,9 @@ export class RecordsMapper {
       devices: data.devices
         ? DevicesMapper.toSimpleResDtoList(data.devices)
         : null,
-      created: data.created,
-      updated: data.updated,
-    };
-  }
-
-  public static toCliExResDto(data: string): RecordCliExistsResDto {
-    return {
-      data,
+      is_closed: data.is_closed,
+      created: data.created.toLocaleString(),
+      updated: data.updated.toLocaleString(),
     };
   }
 }

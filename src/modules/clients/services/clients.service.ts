@@ -1,11 +1,11 @@
-import { Injectable } from "@nestjs/common";
-import { ClientRepository } from "../../repository/services/client.repository";
-import { ClientEntity } from "../../../database/entities/client.entity";
-import { CreateClientDto } from "../models/dto/req/create-client.dto";
-import { ClientListQueryDto } from "../models/dto/req/client-list-query.dto";
-import { UpdateClientDto } from "../models/dto/req/update-client.dto";
-import { ClientID } from "../../../common/types/entity-ids.type";
-import { RecordRepository } from "../../repository/services/record.repository";
+import { Injectable } from '@nestjs/common';
+import { ClientRepository } from '../../repository/services/client.repository';
+import { ClientEntity } from '../../../database/entities/client.entity';
+import { CreateClientDto } from '../models/dto/req/create-client.dto';
+import { ClientListQueryDto } from '../models/dto/req/client-list-query.dto';
+import { UpdateClientDto } from '../models/dto/req/update-client.dto';
+import { ClientID } from '../../../common/types/entity-ids.type';
+import { RecordRepository } from '../../repository/services/record.repository';
 
 @Injectable()
 export class ClientsService {
@@ -17,28 +17,6 @@ export class ClientsService {
   public async create(dto: CreateClientDto): Promise<ClientEntity> {
     return await this.clientRepository.save(this.clientRepository.create(dto));
   }
-
-  // public async isClientExist(
-  //   record: RecordEntity,
-  //   client: ClientEntity,
-  // ): Promise<RecordEntity> {
-  //   const get_rec = await this.recordRepository.findOneBy({ id: record.id });
-  //   const cli_found = await this.clientRepository.findOneBy({
-  //     phone: client.phone,
-  //   });
-  //   if (!cli_found) {
-  //     const new_cli = await this.clientRepository.save(
-  //       this.clientRepository.create(client),
-  //     );
-  //     const new_cli_id = new_cli.id;
-  //     this.recordRepository.merge(get_rec, { client_id: new_cli_id }); //если клиента нет, создаем нового клиента в таблице клиентов и вписываем id
-  //     return await this.recordRepository.save(get_rec);
-  //   } else {
-  //     const cli_id = cli_found.id;
-  //     this.recordRepository.merge(get_rec, { client_id: cli_id }); //если клиент существует, берем id клиента и вписываем в квитанцию
-  //     return await this.recordRepository.save(get_rec);
-  //   }
-  // }
 
   public async findAll(
     query: ClientListQueryDto,
@@ -60,10 +38,6 @@ export class ClientsService {
     return await this.clientRepository.save(client);
   }
 
-  // public async findOneByPhone(phone: string): Promise<ClientEntity> {
-  //   return await this.clientRepository.findOne({ where: { phone } });
-  // }
-
   public async update(
     clientId: ClientID,
     dto: UpdateClientDto,
@@ -75,9 +49,9 @@ export class ClientsService {
     return await this.clientRepository.save(client);
   }
 
-  public async remove(clientPhone: string): Promise<ClientEntity> {
+  public async remove(cli_phone: string): Promise<ClientEntity> {
     const client = await this.clientRepository.findOneBy({
-      phone: clientPhone,
+      phone: cli_phone,
     });
     const records = await this.recordRepository.findBy({
       client_id: client.id,

@@ -25,8 +25,4 @@ export class BaseDeviceReqDto {
   @IsNotEmpty()
   @IsPhoneNumber('UA')
   phone: string;
-
-  // @IsNotEmpty()
-  // @IsEnum(StatusEnum)
-  // status: StatusEnum;
 }

@@ -1,11 +1,23 @@
-import { PickType } from '@nestjs/swagger';
-import { BaseStatusReqDto } from './base-status.req.dto';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateUpdateStatusDto extends PickType(BaseStatusReqDto, [
-  'status',
-]) {
+export class CreateUpdateStatusDto {
   @IsNotEmpty()
   @IsString()
   status: string;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  manufacturer_required: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  is_default: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  is_return_ready: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  is_final: boolean;
 }

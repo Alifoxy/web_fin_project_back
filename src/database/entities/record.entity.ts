@@ -31,8 +31,6 @@ export class RecordEntity extends CreateUpdateModel {
   @OneToMany(() => DeviceEntity, (entity) => entity.record)
   devices?: DeviceEntity[];
 
-  // @OneToOne(() => ClientEntity, (entity) => entity.record_id, {
-  //   onDelete: 'CASCADE',
-  // })
-  // client?: ClientEntity;
+  @Column({ type: 'boolean', default: false })
+  is_closed: boolean;
 }

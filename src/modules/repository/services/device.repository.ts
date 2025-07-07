@@ -16,6 +16,7 @@ export class DeviceRepository extends Repository<DeviceEntity> {
     const qb = this.createQueryBuilder('device');
     qb.leftJoinAndSelect('device.client', 'client');
     qb.leftJoinAndSelect('device.record', 'record');
+    qb.leftJoinAndSelect('device.status', 'status');
 
     qb.take(query.limit);
     qb.skip(skip);
@@ -26,11 +27,11 @@ export class DeviceRepository extends Repository<DeviceEntity> {
   public async findByParams(
     query: DeviceListQueryDto,
   ): Promise<[DeviceEntity[], number]> {
-    const skip = (+query.page - 1) * query.limit;
+    // const skip = (+query.page - 1) * query.limit;
     const qb = this.createQueryBuilder('device');
     qb.leftJoinAndSelect('device.client', 'client');
     qb.leftJoinAndSelect('device.record', 'record');
-    // qb.leftJoinAndSelect('device.status', 'status');
+    qb.leftJoinAndSelect('device.status', 'status');
     // qb.leftJoinAndSelect('device.manufacturer', 'manufacturer');
 
     if (query.search) {
@@ -43,40 +44,19 @@ export class DeviceRepository extends Repository<DeviceEntity> {
     }
 
     if (query.status) {
-      qb.andWhere('device.status_name = :status', { status: query.status });
+      qb.andWhere('status.status = :status', { status: query.status });
     }
 
     if (query.manufacturer) {
-      qb.andWhere('device.manufacturer_name = :manufacturer', {
+      qb.andWhere('device.manufacturer = :manufacturer', {
         manufacturer: query.manufacturer,
       });
     }
     qb.take(query.limit);
-    qb.skip(skip);
+    qb.skip(query.offset);
 
     return await qb.getManyAndCount();
   }
-
-  // public async findAllByRec(
-  //   query: DeviceListQueryDto,
-  // ): Promise<DeviceEntity[]> {
-  //   const qb = this.createQueryBuilder('device');
-  //   qb.leftJoinAndSelect('device.client', 'client');
-  //   qb.leftJoinAndSelect('device.record', 'record');
-  //   qb.leftJoinAndSelect('device.status', 'status');
-  //   qb.leftJoinAndSelect('device.manufacturer', 'manufacturer');
-  //
-  //   if (query.record_id) {
-  //     qb.andWhere('device.record_id = :record_id', {
-  //       record_id: query.record_id,
-  //     });
-  //   }
-  //
-  //   qb.take(query.limit);
-  //   qb.skip(query.offset);
-  //
-  //   return await qb.getMany();
-  // }
 
   public async findById(id: string): Promise<DeviceEntity> {
     const qb = this.createQueryBuilder('device');

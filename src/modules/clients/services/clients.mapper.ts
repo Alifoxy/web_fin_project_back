@@ -3,7 +3,7 @@ import { ClientEntity } from '../../../database/entities/client.entity';
 import { ClientListQueryDto } from '../models/dto/req/client-list-query.dto';
 import { ClientListResDto } from '../models/dto/res/client-list.res.dto';
 import { ClientResDto } from '../models/dto/res/client.res.dto';
-import { ClientParamListResDto } from "../models/dto/res/client_param_list.res.dto";
+import { ClientParamListResDto } from '../models/dto/res/client_param_list.res.dto';
 
 @Injectable()
 export class ClientsMapper {
@@ -36,16 +36,4 @@ export class ClientsMapper {
       updated: data.updated,
     };
   }
-
-  // public static toClientResDto(client: ClientEntity): ClientResDto {
-  //   return {
-  //     id: client.id,
-  //     name: client.name,
-  //     surname: client.surname,
-  //     email: client.email,
-  //     phone: client.phone,
-  //     created: client.created,
-  //     updated: client.updated,
-  //   };
-  // }
 }

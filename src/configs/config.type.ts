@@ -8,6 +8,7 @@ export type AppConfig = {
   port: number;
   host: string;
 };
+
 export type DatabaseConfig = {
   host: string;
   port: number;

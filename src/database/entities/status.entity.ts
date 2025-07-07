@@ -19,6 +19,18 @@ export class StatusEntity extends CreateModel {
   @Column('text')
   status: string;
 
-  @OneToMany(() => DeviceEntity, (entity) => entity.status_name)
+  @Column({ type: 'boolean', default: false })
+  manufacturer_required: boolean;
+
+  @Column({ type: 'boolean', default: false })
+  is_default: boolean;
+
+  @Column({ type: 'boolean', default: false })
+  is_return_ready: boolean;
+
+  @Column({ type: 'boolean', default: false })
+  is_final: boolean;
+
+  @OneToMany(() => DeviceEntity, (entity) => entity.status)
   devices?: DeviceEntity[];
 }

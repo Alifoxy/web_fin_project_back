@@ -5,7 +5,6 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
-  Patch,
   Post,
   Query,
 } from '@nestjs/common';
@@ -37,12 +36,20 @@ export class ManufacturersController {
     }
   }
 
-  @Get()
-  public async findAll(
+  @Get('byPage')
+  public async findAllByPage(
     @Query() query: ManufacturerListQueryDto,
   ): Promise<ManufacturerListResDto> {
     const [entities, total] = await this.manufacturerService.findAll(query);
     return ManufacturersMapper.toResDtoList(entities, query.page, total, query);
+  }
+
+  @Get()
+  public async findAll(
+    @Query() query: ManufacturerListQueryDto,
+  ): Promise<ManufacturerParamListResDto> {
+    const [entities, total] = await this.manufacturerService.findByName(query);
+    return ManufacturersMapper.toParamResDtoList(entities, total, query);
   }
 
   @Get('byName')
@@ -59,21 +66,4 @@ export class ManufacturersController {
   ) {
     return this.manufacturerService.remove(manufacturerId);
   }
-
-  // @Get(':manufacturerId')
-  // public async findOne(
-  //   @Param('manufacturerId', ParseUUIDPipe) manufacturerId: ManufacturerID,
-  // ): Promise<ManufacturerResDto> {
-  //   const result = await this.manufacturerService.findOne(manufacturerId);
-  //   return ManufacturersMapper.toResDto(result);
-  // }
-  //
-  // @Patch(':manufacturerId')
-  // public async update(
-  //   @Param('manufacturerId', ParseUUIDPipe) manufacturerId: ManufacturerID,
-  //   @Body() dto: CreateUpdateManufacturerDto,
-  // ): Promise<ManufacturerResDto> {
-  //   const result = await this.manufacturerService.update(manufacturerId, dto);
-  //   return ManufacturersMapper.toResDto(result);
-  // }
 }

@@ -28,7 +28,11 @@ export class StatusesMapper {
     return {
       id: data.id,
       status: data.status,
-      created: data.created,
+      manufacturer_required: data.manufacturer_required,
+      is_default: data.is_default,
+      is_return_ready: data.is_return_ready,
+      is_final: data.is_final,
+      created: data.created.toLocaleString(),
     };
   }
 }

@@ -3,10 +3,7 @@ import { ManufacturerEntity } from '../../../database/entities/manufacturer.enti
 import { ManufacturerListQueryDto } from '../models/dto/req/manufacturer-list-query.dto';
 import { ManufacturerListResDto } from '../models/dto/res/manufacturer-list.res.dto';
 import { ManufacturerResDto } from '../models/dto/res/manufacturer.res.dto';
-import { ClientEntity } from "../../../database/entities/client.entity";
-import { ClientListQueryDto } from "../../clients/models/dto/req/client-list-query.dto";
-import { ClientParamListResDto } from "../../clients/models/dto/res/client_param_list.res.dto";
-import { ManufacturerParamListResDto } from "../models/dto/res/manufacturer-param-list.res.dto";
+import { ManufacturerParamListResDto } from '../models/dto/res/manufacturer-param-list.res.dto';
 
 @Injectable()
 export class ManufacturersMapper {
@@ -31,7 +28,7 @@ export class ManufacturersMapper {
     return {
       id: data.id,
       manufacturer: data.manufacturer,
-      created: data.created,
+      created: data.created.toLocaleString(),
     };
   }
 }

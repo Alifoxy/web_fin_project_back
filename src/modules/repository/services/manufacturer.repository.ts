@@ -14,7 +14,6 @@ export class ManufacturerRepository extends Repository<ManufacturerEntity> {
   ): Promise<[ManufacturerEntity[], number]> {
     const skip = (+query.page - 1) * query.limit;
     const qb = this.createQueryBuilder('manufacturer');
-    // qb.leftJoinAndSelect('manufacturer.devices', 'devices');
     qb.take(query.limit);
     qb.skip(skip);
 
@@ -26,7 +25,6 @@ export class ManufacturerRepository extends Repository<ManufacturerEntity> {
   ): Promise<[ManufacturerEntity[], number]> {
     const skip = 0;
     const qb = this.createQueryBuilder('manufacturer');
-    qb.leftJoinAndSelect('manufacturer.devices', 'devices');
 
     if (query.manufacturer) {
       qb.andWhere('CONCAT(manufacturer.manufacturer) LIKE :manufacturer');

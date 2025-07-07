@@ -1,5 +1,4 @@
 import { ClientResDto } from '../../../../clients/models/dto/res/client.res.dto';
-import { DeviceListSimpleResDto } from '../../../../devices/models/dto/res/device-list-simple.res.dto';
 import {
   ClientID,
   RecordID,
@@ -12,6 +11,7 @@ export class RecordResDto {
   record_num: number;
   client: ClientResDto;
   devices: DeviceResDto[];
-  created: Date;
-  updated: Date;
+  is_closed: boolean;
+  created: string;
+  updated: string;
 }

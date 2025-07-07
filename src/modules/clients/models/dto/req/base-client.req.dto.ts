@@ -4,7 +4,7 @@ import {
   IsNumberString,
   IsOptional,
   IsString,
-  Length
+  Length,
 } from 'class-validator';
 export class BaseClientReqDto {
   @IsOptional()
@@ -24,7 +24,6 @@ export class BaseClientReqDto {
   email: string;
 
   @IsNotEmpty()
-  // @IsPhoneNumber('UA')
   @IsNumberString()
   phone: string;
 }

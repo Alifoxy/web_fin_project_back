@@ -3,6 +3,7 @@ import {
   ClientID,
   RecordID,
 } from '../../../../../common/types/entity-ids.type';
+import { StatusResDto } from '../../../../statuses/models/dto/res/status.res.dto';
 
 export class DeviceResDto {
   id: string;
@@ -12,8 +13,10 @@ export class DeviceResDto {
   equipment: string;
   break_info: string;
   client: ClientResDto;
-  status_name: string;
-  manufacturer_name: string;
-  created: Date;
-  updated: Date;
+  status: StatusResDto;
+  result: string;
+  price: string;
+  manufacturer: string;
+  created: string;
+  updated: string;
 }

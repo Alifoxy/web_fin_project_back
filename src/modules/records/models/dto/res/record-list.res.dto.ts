@@ -1,6 +1,5 @@
 import { RecordListQueryDto } from '../req/record-list-query.dto';
 import { RecordResDto } from './record.res.dto';
-import { RecordEntity } from '../../../../../database/entities/record.entity';
 
 export class RecordListResDto extends RecordListQueryDto {
   data: RecordResDto[];
