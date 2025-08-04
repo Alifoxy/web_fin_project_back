@@ -22,7 +22,7 @@ export class DevicesMapper {
     total: number,
     query: DeviceListQueryDto,
   ): DeviceListResDto {
-    return { data: data.map(this.toResDto), total, ...query};
+    return { data: data.map(this.toResDto), total, ...query };
   }
 
   public static toSimpleResDtoList(data: DeviceEntity[]): DeviceResDto[] {

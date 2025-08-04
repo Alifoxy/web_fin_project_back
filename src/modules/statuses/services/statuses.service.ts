@@ -49,6 +49,18 @@ export class StatusesService {
     return status.is_final === true;
   }
 
+  public async IsStatusWParamExists(
+    param: CreateUpdateStatusDto,
+  ): Promise<StatusEntity> {
+    if (param.is_default) {
+      return await this.IsBaseExists();
+    } else if (param.is_final) {
+      return await this.IsFinalExists();
+    } else if (param.is_return_ready) {
+      return await this.IsReturnReadyExists();
+    }
+  }
+
   public async IsBaseExists(): Promise<StatusEntity> {
     return await this.statusRepository.findOneBy({ is_default: true });
   }

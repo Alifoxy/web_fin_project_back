@@ -6,15 +6,15 @@ import { ClientRepository } from '../../repository/services/client.repository';
 import { DeviceListQueryDto } from '../models/dto/req/device-list-query.dto';
 import {
   ClientID,
-  DeviceID,
-  RecordID,
-} from '../../../common/types/entity-ids.type';
+  DeviceID, ManufacturerID,
+  RecordID, StatusID
+} from "../../../common/types/entity-ids.type";
 import { RecordEntity } from '../../../database/entities/record.entity';
 import { StatusRepository } from '../../repository/services/status.repository';
 import { CreateDeviceDto } from '../models/dto/req/create-device-dto';
 import { ManufacturerRepository } from '../../repository/services/manufacturer.repository';
 import { ChangeDeviceResultReqDto } from '../models/dto/req/change_device_result.req.dto';
-import { ChangeDevicePriceReqDto } from "../models/dto/req/change_device_price.req.dto";
+import { ChangeDevicePriceReqDto } from '../models/dto/req/change_device_price.req.dto';
 
 @Injectable()
 export class DevicesService {
@@ -51,34 +51,6 @@ export class DevicesService {
         // price: '',
       }),
     );
-
-    // const AAAAAAAAAAA = () => {
-    //   for (const device of devices) {
-    //     await this.deviceRepository.save(
-    //       this.deviceRepository.create({
-    //         record_id: record.id,
-    //         status: baseStat,
-    //         client_id: record.client.id,
-    //         model: device.model,
-    //         equipment: device.equipment,
-    //         break_info: device.break_info,
-    //         manufacturer: device.manufacturer,
-    //         // manufacturer: '',
-    //         result: device.result,
-    //         price: device.result,
-    //       }),
-    //     );
-    //   }
-    // };
-
-    // const devs = await this.deviceRepository.findBy({
-    //   record_id: rec.id,
-    // });
-
-    // const rec = await this.recordRepository.findOneBy({ id: record.id });
-
-    // await this.recordRepository.merge(rec, { devices: devs });
-    // return await this.recordRepository.save(rec);
   }
 
   public async setStatuses(rec: RecordID): Promise<DeviceEntity[]> {
@@ -97,6 +69,21 @@ export class DevicesService {
     query: DeviceListQueryDto,
   ): Promise<[DeviceEntity[], number]> {
     return await this.deviceRepository.findAll(query);
+  }
+
+  public async findByStatus(status_id: StatusID): Promise<DeviceEntity[]> {
+    return await this.deviceRepository.findBy({ status_id });
+  }
+
+  public async findByManufacturer(
+    manufacturer_id: ManufacturerID,
+  ): Promise<DeviceEntity[]> {
+    const man = await this.manufacturerRepository.findOneBy({
+      id: manufacturer_id,
+    });
+    return await this.deviceRepository.findBy({
+      manufacturer: man.manufacturer,
+    });
   }
 
   public async findByParams(
@@ -168,10 +155,17 @@ export class DevicesService {
     const man = await this.manufacturerRepository.findOneBy({
       manufacturer: manufacturer,
     });
-    await this.deviceRepository.merge(device, {
-      manufacturer: man.manufacturer,
-    });
-    return await this.deviceRepository.save(device);
+    if (manufacturer === '') {
+      await this.deviceRepository.merge(device, {
+        manufacturer: '',
+      });
+      return await this.deviceRepository.save(device);
+    } else {
+      await this.deviceRepository.merge(device, {
+        manufacturer: man.manufacturer,
+      });
+      return await this.deviceRepository.save(device);
+    }
   }
 
   public async changeDevResult(

@@ -27,7 +27,7 @@ export class DeviceRepository extends Repository<DeviceEntity> {
   public async findByParams(
     query: DeviceListQueryDto,
   ): Promise<[DeviceEntity[], number]> {
-    // const skip = (+query.page - 1) * query.limit;
+    const skip = (+query.page - 1) * query.limit;
     const qb = this.createQueryBuilder('device');
     qb.leftJoinAndSelect('device.client', 'client');
     qb.leftJoinAndSelect('device.record', 'record');
@@ -53,7 +53,7 @@ export class DeviceRepository extends Repository<DeviceEntity> {
       });
     }
     qb.take(query.limit);
-    qb.skip(query.offset);
+    qb.skip(skip);
 
     return await qb.getManyAndCount();
   }

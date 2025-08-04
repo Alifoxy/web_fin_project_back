@@ -105,8 +105,9 @@ export class RecordsService {
     devices: CreateDeviceDto[];
   }): Promise<RecordEntity> {
     {
+      const unm_phone = rec.client.phone.replace(/[^0-9]/g, '');
       const cli = await this.clientRepository.findOneBy({
-        phone: rec.client.phone,
+        phone: unm_phone,
       });
       const record = await this.CreateRecord(cli.id);
       await this.CreateRecordDevices(record.id, cli.id, rec.devices);

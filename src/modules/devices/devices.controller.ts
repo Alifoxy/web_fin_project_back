@@ -77,10 +77,7 @@ export class DevicesController {
     @Body() priceDto: ChangeDevicePriceReqDto,
     @Param('deviceId', ParseUUIDPipe) deviceId: DeviceID,
   ): Promise<DeviceResDto> {
-    const result = await this.devicesService.changeDevPrice(
-      priceDto,
-      deviceId,
-    );
+    const result = await this.devicesService.changeDevPrice(priceDto, deviceId);
     return DevicesMapper.toResDto(result);
   }
 
@@ -112,7 +109,7 @@ export class DevicesController {
     @Query() query: DeviceListQueryDto,
   ): Promise<DeviceListResDto> {
     const [entities, total] = await this.devicesService.findByParams(query);
-    return DevicesMapper.toParamResDtoList(entities, total, query);
+    return DevicesMapper.toResDtoList(entities, query.page, total, query);
   }
 
   @Get(':deviceId')

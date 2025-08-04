@@ -36,9 +36,10 @@ export class RecordsController {
   public async create(
     @Body() rec: { client: CreateClientDto; devices: CreateDeviceDto[] },
   ) {
+    const unm_phone = rec.client.phone.replace(/[^0-9]/g, '');
     const base_status = await this.statusesService.IsBaseExists();
     const ex_client = await this.clientsService.IsClientExists(
-      rec.client.phone,
+      unm_phone,
     );
     if (!base_status) {
       throw new BadRequestException('Base status does not exist !');
@@ -55,7 +56,8 @@ export class RecordsController {
     @Body() rec: { client: CreateClientDto; devices: CreateDeviceDto[] },
   ) {
     const cli = rec.client;
-    await this.clientsService.remove(cli.phone);
+    const unm_phone = cli.phone.replace(/[^0-9]/g, '');
+    await this.clientsService.remove(unm_phone);
     const result = await this.recordsService.create(rec);
     return RecordsMapper.toResDto(result);
   }

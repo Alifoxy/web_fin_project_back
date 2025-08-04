@@ -15,7 +15,13 @@ export class ClientsService {
   ) {}
 
   public async create(dto: CreateClientDto): Promise<ClientEntity> {
-    return await this.clientRepository.save(this.clientRepository.create(dto));
+    const unm_phone = dto.phone.replace(/[^0-9]/g, '');
+    return await this.clientRepository.save(
+      this.clientRepository.create({
+        ...dto,
+        phone: unm_phone,
+      }),
+    );
   }
 
   public async findAll(

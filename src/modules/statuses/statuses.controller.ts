@@ -10,33 +10,44 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  Query,
-} from '@nestjs/common';
-import { StatusID } from '../../common/types/entity-ids.type';
-import { StatusesService } from './services/statuses.service';
-import { CreateUpdateStatusDto } from './models/dto/req/create-update-status-dto';
-import { StatusesMapper } from './services/statuses.mapper';
-import { StatusListQueryDto } from './models/dto/req/status-list-query.dto';
-import { StatusListResDto } from './models/dto/res/status-list.res.dto';
-import { StatusParamListResDto } from './models/dto/res/status-param-list.res.dto';
-import { StatusResDto } from './models/dto/res/status.res.dto';
-import { ChangeStatusPropsReqDto } from './models/dto/req/change_status_props_req.dto';
+  Query
+} from "@nestjs/common";
+import { StatusID } from "../../common/types/entity-ids.type";
+import { StatusesService } from "./services/statuses.service";
+import { CreateUpdateStatusDto } from "./models/dto/req/create-update-status-dto";
+import { StatusesMapper } from "./services/statuses.mapper";
+import { StatusListQueryDto } from "./models/dto/req/status-list-query.dto";
+import { StatusListResDto } from "./models/dto/res/status-list.res.dto";
+import { StatusParamListResDto } from "./models/dto/res/status-param-list.res.dto";
+import { StatusResDto } from "./models/dto/res/status.res.dto";
+import { ChangeStatusPropsReqDto } from "./models/dto/req/change_status_props_req.dto";
+import { DevicesService } from "../devices/services/devices.service";
 
 @Controller('statuses')
 export class StatusesController {
-  constructor(private statusService: StatusesService) {}
+  constructor(
+    private statusService: StatusesService,
+    private deviceService: DevicesService,
+  ) {}
 
   @Post()
   public async create(@Body() dto: CreateUpdateStatusDto) {
     const ex_status = await this.statusService.IsStatusExists(dto.status);
-    const base_status = await this.statusService.IsBaseExists();
-    const final_status = await this.statusService.IsFinalExists();
-    if ((base_status && dto.is_default) || (final_status && dto.is_final)) {
+    const stat_w_params_exist =
+      await this.statusService.IsStatusWParamExists(dto);
+
+    const multiple_params =
+      (dto.is_final && dto.is_default) ||
+      (dto.is_final && dto.is_return_ready) ||
+      (dto.is_return_ready && dto.is_default) ||
+      (dto.is_return_ready && dto.is_default && dto.is_final);
+
+    if (multiple_params) {
+      throw new ConflictException(`Status cannot have multiple main params`);
+    } else if (stat_w_params_exist) {
       throw new ForbiddenException(
         `Status with this property already exists !`,
       );
-    } else if (dto.is_final && dto.is_default) {
-      throw new ConflictException(`Status cannot be both final and base!`);
     } else if (ex_status) {
       throw new BadRequestException(`Status already exists !`);
     } else {
@@ -166,6 +177,13 @@ export class StatusesController {
 
   @Delete(':statusId')
   public async remove(@Param('statusId', ParseUUIDPipe) statusId: StatusID) {
-    return this.statusService.remove(statusId);
+    const stat_devices = await this.deviceService.findByStatus(statusId);
+    if (stat_devices.length > 0) {
+      throw new ConflictException(
+        `This status is in use, it cannot be deleted!`,
+      );
+    } else {
+      return this.statusService.remove(statusId);
+    }
   }
 }

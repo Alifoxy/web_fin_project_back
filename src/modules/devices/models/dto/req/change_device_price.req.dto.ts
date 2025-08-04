@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsNumberString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class ChangeDevicePriceReqDto {
-  @IsNotEmpty()
-  @IsNumberString()
+  @IsString()
   price: string;
 }

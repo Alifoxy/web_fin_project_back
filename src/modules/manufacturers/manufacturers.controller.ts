@@ -16,10 +16,14 @@ import { ManufacturerResDto } from './models/dto/res/manufacturer.res.dto';
 import { ManufacturerListQueryDto } from './models/dto/req/manufacturer-list-query.dto';
 import { ManufacturerListResDto } from './models/dto/res/manufacturer-list.res.dto';
 import { ManufacturerParamListResDto } from './models/dto/res/manufacturer-param-list.res.dto';
+import { DevicesService } from '../devices/services/devices.service';
 
 @Controller('manufacturers')
 export class ManufacturersController {
-  constructor(private manufacturerService: ManufacturersService) {}
+  constructor(
+    private manufacturerService: ManufacturersService,
+    private deviceService: DevicesService,
+  ) {}
 
   @Post()
   public async create(
@@ -64,6 +68,14 @@ export class ManufacturersController {
   public async remove(
     @Param('manufacturerId', ParseUUIDPipe) manufacturerId: ManufacturerID,
   ) {
-    return this.manufacturerService.remove(manufacturerId);
+    const manufacturers =
+      await this.deviceService.findByManufacturer(manufacturerId);
+    if (manufacturers.length > 0) {
+      throw new ConflictException(
+        `This manufacturer is in use, it cannot be deleted!`,
+      );
+    } else {
+      return this.manufacturerService.remove(manufacturerId);
+    }
   }
 }
